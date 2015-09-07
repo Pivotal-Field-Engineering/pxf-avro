@@ -17,7 +17,7 @@ This hotfix add "null" value handler in all composite data types. Before officia
 
 Installation:
 
-1) download the jar file (Alex and Faisal should have access to this link) or clone/compile this project.
+1) download the pre-compiled jar file or clone/compile this project yourself.
 https://drive.google.com/a/pivotal.io/file/d/0B0EpWDp_6R0OZXJuZnBGQ1o3cTg/view?usp=sharing
 
 2) push pxf-avro-0.1.0-SNAPSHOT.jar to /usr/lib/gphd/pxf on all pxf hosts.
