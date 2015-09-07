@@ -1,0 +1,50 @@
+This is a non-official hotfix for Avro pxf connector in PXF2.5.0.1. 
+
+PXF 2.5.0.1 supports Avro composite data types, but it can't handle null value as option with composite types. 
+ex.
+    {
+      "name": "map_ex",
+      "type": [ "null", {
+                "type": "map",
+                "values": ["null", "string"],
+                default": null
+                }],
+      "default" : null
+    }
+    
+When the field is declared as a composite type, in this example, map and is null in file, the default avro resolver can't handle it and throws null point exception.
+This hotfix add "null" value handler in all composite data types. Before official hotfix releaesed, you can use this as custom avro pxf connector. 
+
+Installation:
+
+1) download the jar file (Alex and Faisal should have access to this link) or clone/compile this project.
+https://drive.google.com/a/pivotal.io/file/d/0B0EpWDp_6R0OZXJuZnBGQ1o3cTg/view?usp=sharing
+
+2) push pxf-avro-0.1.0-SNAPSHOT.jar to /usr/lib/gphd/pxf on all pxf hosts.
+
+3) add the following line to /etc/gphd/pxf/conf/pxf-public.classpath and push on all pxf hosts.
+/usr/lib/gphd/pxf/pxf-avro-0.1.0-SNAPSHOT.jar
+
+4) add the following entry to /etc/gphd/pxf/conf/pxf-profiles.xml (all pxf hosts).
+
+    <profile>
+        <name>Avro-map</name>
+        <plugins>
+            <fragmenter>com.pivotal.pxf.plugins.hdfs.HdfsDataFragmenter</fragmenter>
+            <accessor>com.pivotal.pxf.plugins.avro_custom.AvroFileAccessor</accessor>
+            <resolver>com.pivotal.pxf.plugins.avro_custom.AvroResolver</resolver>
+            <analyzer>com.pivotal.pxf.plugins.hdfs.HdfsAnalyzer</analyzer>
+        </plugins>
+    </profile>
+
+5) Restart HAWQ and PXF from Ambari WebUI.
+
+6) Rebuild external table with new Avro-map profile above for table definition.
+CREATE EXTERNAL TABLE test(...........)
+LOCATION('pxf://namenode-host:51200/tmp/test.avro?PROFILE=Avro-map&DATA-SCHEMA=/tmp/test.avsc')
+FORMAT 'CUSTOM' (formatter='pxfwritable_import');
+
+
+Enjoy using HAWQ!
+
+Notes: this was tested on HDP 2.2.6/HAWQ1.3.1.0/Ambari 2.0.x
