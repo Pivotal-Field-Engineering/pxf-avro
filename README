@@ -1,4 +1,4 @@
-This is a non-official hotfix for Avro pxf connector in PXF2.5.0.1. 
+This is not an official hotfix for Avro pxf connector in PXF2.5.0.1! Pivotal will not support this project and use it at your own risk! 
 
 PXF 2.5.0.1 supports Avro composite data types, but it can't handle null value as option with composite types. 
 ex.
