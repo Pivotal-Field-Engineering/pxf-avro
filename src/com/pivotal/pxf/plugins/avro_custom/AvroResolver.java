@@ -72,11 +72,9 @@ public class AvroResolver extends Plugin implements ReadResolver{
 		Schema.Type fieldType = fieldSchema.getType();
 		int ret = 0;
 		Object value;
-		/*try to figure out the ordinal of fieldType here*/
 		/*RECORD*, ENUM*, ARRAY*, MAP*, UNION*, FIXED*, STRING*, BYTES*,INT*, LONG*, FLOAT*, DOUBLE*, BOOLEAN*, NULL*;*/
 		switch ( fieldType) {
 		case FIXED:
-		    /* need to handle null here */
 			List fixedRecord = new LinkedList();
 			if(fieldValue!=null){
 				ret = setFixedField(fixedRecord, fieldValue, fieldSchema);
@@ -88,32 +86,29 @@ public class AvroResolver extends Plugin implements ReadResolver{
 			break;
 		case ARRAY:
 			@SuppressWarnings("rawtypes")
-			/* need to handle null here */
 			List listRecord = new LinkedList();
 			if (fieldValue!=null){
 				ret = setArrayField(listRecord, fieldValue, fieldSchema);
 				addOneFieldToRecord(record, DataType.TEXT, String.format("[%s]", new Object[] { HdfsUtilities.toString(listRecord, this.collectionDelim) }));
 			}
 			else{
-				addOneFieldToRecord(record, DataType.TEXT, fieldValue);
+				ret = addOneFieldToRecord(record, DataType.TEXT, fieldValue);
 			}
 			break;
 		case MAP:
 		    @SuppressWarnings("rawtypes")
-		    /* need to handle null here */
 			List mapRecord = new LinkedList();
 		    if (fieldValue!=null){
 		    	ret = setMapField(mapRecord, fieldValue, fieldSchema);
 		    	addOneFieldToRecord(record, DataType.TEXT, String.format("{%s}", new Object[] { HdfsUtilities.toString(mapRecord, this.collectionDelim) }));
 		    }
 		    else{
-		    	addOneFieldToRecord(record, DataType.TEXT, fieldValue);
+		    	ret = addOneFieldToRecord(record, DataType.TEXT, fieldValue);
 		    }
 
 		    break;
 		case RECORD:
 		    @SuppressWarnings("rawtypes")
-		    /* need to handle null here */
 			List recRecord = new LinkedList();
 		    if(fieldValue!=null){
 		    	ret = setRecordField(recRecord, fieldValue, fieldSchema);
@@ -189,12 +184,10 @@ public class AvroResolver extends Plugin implements ReadResolver{
 	      }
 	      break;
 	    default:
-	      oneField.val = val;//not a good idea but......all types go to here....
+	      oneField.val = val;
 	    }
 
 	    record.add(oneField);
-	    //debug code
-	    //System.out.println("record size: "+record.size());
 	    return 1;
 	}
 
