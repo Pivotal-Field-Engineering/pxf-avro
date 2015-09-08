@@ -31,7 +31,7 @@ https://drive.google.com/a/pivotal.io/file/d/0B0EpWDp_6R0OZXJuZnBGQ1o3cTg/view?u
         <name>Avro-map</name>
         <plugins>
             <fragmenter>com.pivotal.pxf.plugins.hdfs.HdfsDataFragmenter</fragmenter>
-            <accessor>com.pivotal.pxf.plugins.avro_custom.AvroFileAccessor</accessor>
+            <accessor>com.pivotal.pxf.plugins.hdfs.AvroFileAccessor</accessor>
             <resolver>com.pivotal.pxf.plugins.avro_custom.AvroResolver</resolver>
             <analyzer>com.pivotal.pxf.plugins.hdfs.HdfsAnalyzer</analyzer>
         </plugins>
