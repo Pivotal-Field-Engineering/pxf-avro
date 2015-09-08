@@ -44,6 +44,7 @@ CREATE EXTERNAL TABLE test(...........)
 LOCATION('pxf://namenode-host:51200/tmp/test.avro?PROFILE=Avro-map&DATA-SCHEMA=/tmp/test.avsc')
 FORMAT 'CUSTOM' (formatter='pxfwritable_import');
 
+PS. It seems like PXF 2.5.0.1 on HDP2.2.6 (installed by Ambari) doesn't read pxf-public.classpath. I added the snapshot jar to pxf-private.classpath as a workaround.
 
 Enjoy using HAWQ!
 
